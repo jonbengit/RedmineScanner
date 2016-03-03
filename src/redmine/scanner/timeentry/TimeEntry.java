@@ -2,6 +2,8 @@ package redmine.scanner.timeentry;
 
 import javax.xml.bind.annotation.XmlElement;
 
+import redmine.scanner.RedmineWs;
+
 public class TimeEntry {
 
 	@XmlElement(name = "id")
@@ -89,7 +91,7 @@ public class TimeEntry {
 
 	public String getDetails() {
 		return hours + " Hours on " + activity.getName()
-				+ " Issue <a href='http://redmine.sanovi.com:3000/issues/"
+				+ " Issue <a href='" + RedmineWs.getRedmineUrl() + "/issues/"
 				+ issue.getId() + "'>" + issue.getId() + "</a>" + "."
 				+ comments;
 	}
@@ -100,7 +102,7 @@ public class TimeEntry {
 		}
 		return hours + " Hours on " + activity.getName() + " Issue "
 				+ issue.getId()
-				+ " : <a href='http://redmine.sanovi.com:3000/issues/"
+				+ " : <a href='" + RedmineWs.getRedmineUrl()  + "/issues/"
 				+ issue.getId() + "'>" + issueTitle + "</a>" + ". " + comments;
 	}
 }

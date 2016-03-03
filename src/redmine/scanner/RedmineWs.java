@@ -114,7 +114,7 @@ public class RedmineWs {
 
 
 	
-	static String getRedmineUrl() {
+	public static String getRedmineUrl() {
 		return ScannerConfig.REDMINE_URL;
 	}
 
