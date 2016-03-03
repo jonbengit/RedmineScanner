@@ -1,0 +1,91 @@
+package com.sanovi.redmine.scanner;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+/**
+ * For sending the report emails
+ * 
+ * @author Anil Kurian
+ */
+public class RedmineScannerMail {
+
+	private List<String> receipients = new ArrayList<String>();
+
+	private String content;
+
+	private String subject;
+
+	public void sendMail() {
+
+		String from = "redmine.scanner@sanovi.com";
+
+		String host = "localhost";
+
+		Properties properties = System.getProperties();
+
+		properties.setProperty("mail.smtp.host", host);
+
+		Session session = Session.getDefaultInstance(properties);
+
+		try {
+			MimeMessage message = new MimeMessage(session);
+			message.setHeader("Content-Type", "text/html");
+
+			message.setFrom(new InternetAddress(from));
+
+			for (String receiprient : receipients) {
+				message.addRecipient(Message.RecipientType.TO,
+						new InternetAddress(receiprient));
+			}
+
+			message.setSubject(subject);
+			message.setContent(content + getMailFooter(), "text/html");
+
+			Transport.send(message);
+			System.out.println("Sent message successfully....");
+		} catch (MessagingException mex) {
+			mex.printStackTrace();
+		}
+
+	}
+
+	private String getMailFooter() {
+		return "<br><br><br><font face='Arial' size=1>This is an auto generated e-mail from Redmine Scanner developed by "
+				+ "<a href='http://sanovi.com/'>Sanovi Technologies</a>."
+				+ "The information contained in this email is purely based on the status in Sanovi <a href='"
+				+ RedmineWs.getRedmineUrl()
+				+ "'>Redmine</a>."
+				+ "<br>You are getting this e-mail becuase you are a member of this project in Sanovi Redmine. Contact Redmine <a href='"
+				+ RedmineWs.getRedmineUrl()
+				+ "users?sort=admin%3Adesc%2Clogin'>Administrators</a> for any issues.</font>";
+	}
+
+	/**
+	 * @param receiprients
+	 *            the receiprients to set
+	 */
+	public void setReceiprients(List<String> receiprients) {
+		this.receipients = receiprients;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	/**
+	 * @param subject
+	 *            the subject to set
+	 */
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+}
