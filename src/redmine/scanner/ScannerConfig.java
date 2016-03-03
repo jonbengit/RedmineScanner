@@ -2,7 +2,7 @@ package redmine.scanner;
 
 public class ScannerConfig {
 
-	static final String REDMINE_URL = System.getenv("REDMINE_URL");
+	static final String REDMINE_URL = "http://www.redmine.org";
 	
 	static final String WS_USER = "ws.user";
 	
