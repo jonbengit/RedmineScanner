@@ -35,7 +35,7 @@ public class RedmineWs {
 
 	private WebResource redmineWebResource;
 	
-	RedmineWs() {
+	RedmineWs() throws RedmineScannerException {
 		ClientConfig config = new DefaultClientConfig();
 		Client client = Client.create(config);
 		client.addFilter(new HTTPBasicAuthFilter(ScannerConfig.WS_USER, ScannerConfig.PASSWORD));
@@ -118,8 +118,12 @@ public class RedmineWs {
 		return ScannerConfig.REDMINE_URL;
 	}
 
-	private URI getBaseURI() {
-		return UriBuilder.fromUri(getRedmineUrl()).build();
+	private URI getBaseURI() throws RedmineScannerException {
+		String redmineUrl = getRedmineUrl();
+		if(null == redmineUrl || redmineUrl.isEmpty()) {
+			throw new RedmineScannerException("Redmine URL is empty");
+		}
+		return UriBuilder.fromUri(redmineUrl).build();
 	}
 
 }

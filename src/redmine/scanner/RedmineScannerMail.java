@@ -11,6 +11,8 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import redmine.scanner.utils.RedmineScannerLogger;
+
 /**
  * For sending the report emails
  * 
@@ -48,7 +50,7 @@ public class RedmineScannerMail {
 			message.setContent(content + getMailFooter(), "text/html");
 
 			Transport.send(message);
-			System.out.println("Sent message successfully....");
+			RedmineScannerLogger.getInstance().log("Sent message successfully....");
 		} catch (MessagingException mex) {
 			mex.printStackTrace();
 		}

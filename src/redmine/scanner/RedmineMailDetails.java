@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.List;
 
+import redmine.scanner.utils.RedmineScannerLogger;
+
 /**
  * Represents everything that is required to send a mail for a project. Also
  * sends the email.
@@ -27,7 +29,7 @@ public class RedmineMailDetails {
 		mail.setReceiprients(emailsIds);
 		mail.setContent(projectInfoDetails);
 		mail.setSubject(getEmailSubject());
-		System.out.println("Sending mail for " + projectName + "... ");
+		RedmineScannerLogger.getInstance().log("Sending mail for " + projectName + "... ");
 		mail.sendMail();
 	}
 
@@ -35,7 +37,7 @@ public class RedmineMailDetails {
 		try {
 			String fileName = projectName + ".html";
 			File file = new File(fileName);
-			System.out.println("Creating file " + fileName + "... ");
+			RedmineScannerLogger.getInstance().log("Creating file " + fileName + "... ");
 			file.createNewFile();
 			FileWriter writter = new FileWriter(file);
 			writter.write("SUBJECT " + getEmailSubject());

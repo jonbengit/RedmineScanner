@@ -14,6 +14,7 @@ import redmine.scanner.timeentry.TimeEntry;
 import redmine.scanner.timeentry.TimeEntryProcessor;
 import redmine.scanner.user.UserDetailsProcessor;
 import redmine.scanner.user.Users;
+import redmine.scanner.utils.RedmineScannerLogger;
 
 
 /**
@@ -36,7 +37,7 @@ import redmine.scanner.user.Users;
  */
 public class RedmineScanner {
 
-	private RedmineWs redmineWs = new RedmineWs();
+	private RedmineWs redmineWs ;
 
 	private Map<Integer, String> redmineProjects;
 
@@ -57,9 +58,10 @@ public class RedmineScanner {
 	private boolean sendEmail =  Boolean.valueOf(System.getenv("EMAIL"));
 
 	public static void main(String[] args) {
-		System.out.println("Redmine Scanner is starting...");
+		RedmineScannerLogger.getInstance().log("Redmine Scanner is starting...");
 		try {
 			RedmineScanner scanner = new RedmineScanner();
+			scanner.redmineWs = new RedmineWs();
 			scanner.findLwd();
 			scanner.readTimeEntries();
 			scanner.readProjects();
@@ -69,7 +71,8 @@ public class RedmineScanner {
 					.println("\n\n== Total time on all projects logged yesterday "
 							+ scanner.totalTimeOnAllProjects + " ==");
 		} catch (Exception e) {
-			e.printStackTrace();
+			RedmineScannerLogger.getInstance().err(e.getMessage());
+//			e.printStackTrace();
 		}
 	}
 
@@ -80,7 +83,7 @@ public class RedmineScanner {
 	private void readProjects() {
 		Projects projects = redmineWs.getAllRedmineProjects();
 		redmineProjects = projects.getProjects();
-		System.out.println("Redmine projects are "+redmineProjects);
+		RedmineScannerLogger.getInstance().log("Redmine projects are "+redmineProjects);
 	}
 
 	private void readAllUsers() {
@@ -220,7 +223,7 @@ public class RedmineScanner {
 		Calendar lastWorkingDay = Calendar.getInstance();
 		if (Calendar.SATURDAY == lastWorkingDay.get(Calendar.DAY_OF_WEEK)
 				|| Calendar.SUNDAY == lastWorkingDay.get(Calendar.DAY_OF_WEEK)) {
-			System.out.println("Not running on weekends...");
+			RedmineScannerLogger.getInstance().log("Not running on weekends...");
 			System.exit(0);
 		}
 		if (Calendar.MONDAY == lastWorkingDay.get(Calendar.DAY_OF_WEEK)) {
