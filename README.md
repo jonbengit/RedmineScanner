@@ -8,3 +8,5 @@ Co-relates the time-entries for each projects with users in the project and prep
 Finds out the email IDs of the members in the project and send the report for the project to all of them. 
 
 This will be very useful for any teams which uses Redmine for their Project Management as it gives a nice tabular summary report of everything happened on a project in a day. Configure this as a Jenkins cron job and you have the report in your inbox everyday morning. 
+
+Feel free to request for new features
